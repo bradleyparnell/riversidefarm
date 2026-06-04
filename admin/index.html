@@ -57,8 +57,8 @@
     }
 
     .login-logo img {
-      height: 48px;
-      filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(0,212,255,0.5));
+      height: 80px;
+      filter: brightness(0) invert(1) drop-shadow(0 0 12px rgba(0,212,255,0.5));
     }
 
     .login-label {
@@ -153,8 +153,8 @@
     }
 
     .top-bar img {
-      height: 36px;
-      filter: brightness(0) invert(1) drop-shadow(0 0 6px rgba(0,212,255,0.4));
+      height: 52px;
+      filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(0,212,255,0.4));
     }
 
     .top-bar-title {
@@ -386,10 +386,77 @@
       text-align: right;
     }
 
+    /* ── MOBILE CARDS (replace table on small screens) ── */
+    .reg-cards { display: none; }
+
     @media (max-width: 700px) {
-      .main-content { padding: 1rem; }
-      td.hide-mobile, th.hide-mobile { display: none; }
-      .top-bar { padding: 0.8rem 1rem; }
+      /* Layout */
+      .main-content { padding: 0.85rem; }
+      .top-bar {
+        padding: 0.75rem 1rem;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+      .top-bar-title { font-size: 0.7rem; }
+      .top-bar img { height: 42px; }
+
+      /* Login */
+      .login-box { padding: 2rem 1.5rem; }
+      .login-logo img { height: 64px; }
+
+      /* Stats: 2-column grid */
+      .stats-row { grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem; }
+      .stat-value { font-size: 1.6rem; }
+
+      /* Toolbar: stack vertically */
+      .toolbar { flex-direction: column; align-items: stretch; gap: 0.6rem; }
+      .search-wrap { min-width: unset; }
+      .action-btn { padding: 0.7rem 1rem; font-size: 0.78rem; text-align: center; }
+
+      /* Hide table, show cards */
+      .table-wrap table { display: none; }
+      .reg-cards { display: block; }
+
+      /* Card layout */
+      .reg-card {
+        background: var(--navy3);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 0.6rem;
+      }
+      .reg-card-name {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--white);
+        margin-bottom: 0.3rem;
+      }
+      .reg-card-meta {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 0.2rem;
+        word-break: break-all;
+      }
+      .reg-card-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-top: 0.6rem;
+        flex-wrap: wrap;
+      }
+      .reg-card-date { font-size: 0.72rem; color: var(--muted); }
+      .reg-card-note {
+        margin-top: 0.6rem;
+        font-size: 0.78rem;
+        color: var(--muted);
+        font-style: italic;
+        border-top: 1px solid var(--border);
+        padding-top: 0.6rem;
+      }
+      /* Bigger tap targets */
+      .note-btn { padding: 0.35rem 0.8rem; font-size: 0.75rem; }
+      .logout-btn { padding: 0.5rem 1rem; }
     }
   </style>
 </head>
@@ -517,7 +584,7 @@
     btn.classList.add('spinning');
 
     // Cache bust
-    var url = '../admin/data/registrations.json?v=' + Date.now();
+    var url = './data/registrations.json?v=' + Date.now();
     fetch(url)
       .then(function(r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -610,7 +677,33 @@
     });
     tbody += '</tbody>';
 
-    wrap.innerHTML = '<table>' + thead + tbody + '</table>';
+    wrap.innerHTML = '<table>' + thead + tbody + '</table>' +
+      renderCards(filtered);
+  }
+
+  function renderCards(data) {
+    if (!data.length) return '';
+    var html = '<div class="reg-cards">';
+    data.forEach(function(r, i) {
+      var hasNote = r.message && r.message.trim();
+      html += '<div class="reg-card">';
+      html += '<div class="reg-card-name">' + esc(r.name || '—') + '</div>';
+      html += '<div class="reg-card-meta">' + esc(r.email || '') + '</div>';
+      if (r.company) html += '<div class="reg-card-meta"><span class="badge">' + esc(r.company) + '</span>' + (r.role ? ' · ' + esc(r.role) : '') + '</div>';
+      html += '<div class="reg-card-row">';
+      html += '<span class="reg-card-date">' + fmtDate(r.submitted_at) + '</span>';
+      if (hasNote) {
+        html += '<button class="note-btn" onclick="toggleNote(' + i + ')">' +
+          (expandedRows.has(i) ? '▲ Hide' : '▼ Note') + '</button>';
+      }
+      html += '</div>';
+      if (hasNote && expandedRows.has(i)) {
+        html += '<div class="reg-card-note">"' + esc(r.message) + '"</div>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+    return html;
   }
 
   function sortBy(col) {
