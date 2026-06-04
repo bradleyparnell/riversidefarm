@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Summit at Riverside Farm | August 8–9</title>
+  <title>AI Summit at Riverside Farm | August 7–9</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -439,7 +439,7 @@
       color: var(--navy);
       margin-bottom: 24px;
     }
-    .about-text h2 em { font-style: italic; color: var(--cyan); }
+    .about-text h2 em { font-style: italic; color: var(--gold); }
     .about-text p {
       font-size: 0.95rem;
       color: #4a5568;
@@ -547,10 +547,10 @@
     .agenda .section-header p { color: rgba(255,255,255,0.6); }
     .agenda-days {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 2px;
       margin-top: 16px;
-      max-width: 900px;
+      max-width: 1100px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -630,7 +630,7 @@
       line-height: 1.2;
       margin-bottom: 20px;
     }
-    .playbook-text h2 em { font-style: italic; color: var(--cyan); }
+    .playbook-text h2 em { font-style: italic; color: var(--gold); }
     .playbook-text p {
       font-size: 0.95rem;
       color: #4a5568;
@@ -824,6 +824,83 @@
     }
     footer a:hover { opacity: 1; }
 
+    /* ── ANIMATIONS ── */
+
+    /* Scroll reveal base state */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered children */
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .stagger.visible > *:nth-child(1) { transition-delay: 0.05s; }
+    .stagger.visible > *:nth-child(2) { transition-delay: 0.15s; }
+    .stagger.visible > *:nth-child(3) { transition-delay: 0.25s; }
+    .stagger.visible > *:nth-child(4) { transition-delay: 0.35s; }
+    .stagger.visible > *:nth-child(5) { transition-delay: 0.45s; }
+    .stagger.visible > *:nth-child(6) { transition-delay: 0.55s; }
+    .stagger.visible > * { opacity: 1; transform: translateY(0); }
+
+    /* Pulsing glow on countdown numbers */
+    @keyframes countPulse {
+      0%, 100% { text-shadow: 0 0 8px rgba(0,212,255,0.4); }
+      50%       { text-shadow: 0 0 22px rgba(0,212,255,0.9), 0 0 40px rgba(0,212,255,0.4); }
+    }
+    .cd-value, .countdown-unit .num { animation: countPulse 2s ease-in-out infinite; }
+
+    /* Hero CTA float */
+    @keyframes btnFloat {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-4px); }
+    }
+    .hero-cta .btn-primary { animation: btnFloat 3s ease-in-out infinite; }
+    .hero-cta .btn-primary:hover { animation: none; }
+
+    /* Glowing border pulse on agenda cards on hover */
+    @keyframes borderPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,255,0); }
+      50%       { box-shadow: 0 0 20px 3px rgba(0,212,255,0.25); }
+    }
+    .agenda-day:hover { animation: borderPulse 1.5s ease-in-out infinite; }
+
+    /* Typing cursor blink */
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .typed-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--cyan);
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blink 0.8s step-end infinite;
+    }
+
+    /* Section divider line draw */
+    @keyframes lineDraw {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+    .section-header.visible::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 2px;
+      background: var(--cyan);
+      margin: 16px auto 0;
+      transform-origin: left;
+      animation: lineDraw 0.6s ease 0.3s both;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
 
@@ -920,7 +997,7 @@
     <div class="logo">
       <img src="https://bradleyparnell.github.io/riversidefarm/assets/logo.png" alt="Riverside Farm" />
     </div>
-    <span class="badge">August 8–9, 2025 · Pittsfield, VT</span>
+    <span class="badge">August 7–9, 2025 · Pittsfield, VT</span>
   </nav>
 
   <!-- HERO -->
@@ -936,11 +1013,11 @@
     <div class="hero-content">
       <div class="hero-eyebrow">Riverside Farm · Pittsfield, Vermont</div>
       <h1>The <em>AI Summit</em><br>at Riverside Farm</h1>
-      <p class="hero-sub">Where innovation meets intention — deep in the Vermont countryside</p>
+      <p class="hero-sub">Built for <span id="typed-text">Professionals.</span></p>
       <div class="hero-meta">
         <div class="hero-meta-item">
           <div class="label">Dates</div>
-          <div class="value">August 8 – 9</div>
+          <div class="value">August 7 – 9</div>
         </div>
         <div class="hero-divider"></div>
         <div class="hero-meta-item">
@@ -1002,12 +1079,12 @@
   <!-- WHAT TO EXPECT -->
   <section class="expect" id="experience">
     <div class="expect-inner">
-      <div class="section-header">
+      <div class="section-header reveal">
         <div class="eyebrow">What to Expect</div>
         <h2>Three Days of <em>Focused Innovation</em></h2>
         <p>Every element of the summit is designed to help you leave with clarity, capability, and a concrete plan for applying AI in your world.</p>
       </div>
-      <div class="expect-grid">
+      <div class="expect-grid stagger">
         <div class="expect-card">
           <div class="expect-icon">🎯</div>
           <h3>Expert-Led Sessions</h3>
@@ -1045,33 +1122,44 @@
   <!-- AGENDA -->
   <section class="agenda" id="agenda">
     <div class="agenda-inner">
-      <div class="section-header">
+      <div class="section-header reveal">
         <div class="eyebrow">Weekend Overview</div>
-        <h2>Two Days, <em>One Transformation</em></h2>
+        <h2>Three Days, <em>One Transformation</em></h2>
         <p style="color:rgba(255,255,255,0.55)">A thoughtfully designed arc — from foundation to implementation to ownership.</p>
       </div>
-      <div class="agenda-days">
+      <div class="agenda-days stagger">
         <div class="agenda-day">
-          <div class="day-label">Day One · August 8</div>
-          <div class="day-title">Foundations &amp;<br>Application</div>
+          <div class="day-label">Day One · August 7</div>
+          <div class="day-title">Foundations &amp;<br>Orientation</div>
           <ul>
             <li>Arrival, welcome reception &amp; farm tour</li>
             <li>Opening keynote: The AI landscape today</li>
             <li>AI readiness assessment &amp; peer introductions</li>
-            <li>Morning sessions: AI across business functions</li>
+            <li>Sessions: AI across business functions</li>
             <li>Live workshop: Build your first AI workflow</li>
             <li>Evening dinner &amp; fire pit networking</li>
           </ul>
         </div>
         <div class="agenda-day">
-          <div class="day-label">Day Two · August 9</div>
-          <div class="day-title">Deep Dives &amp;<br>Your Playbook</div>
+          <div class="day-label">Day Two · August 8</div>
+          <div class="day-title">Deep Dives &amp;<br>Integration</div>
           <ul>
             <li>Panel: Real-world wins, failures &amp; lessons</li>
             <li>Breakouts by industry &amp; use case</li>
+            <li>Expert sessions: AI tools in practice</li>
+            <li>Peer exchange &amp; collaborative problem-solving</li>
+            <li>Afternoon nature walk &amp; decompression</li>
+            <li>Group dinner &amp; open networking</li>
+          </ul>
+        </div>
+        <div class="agenda-day">
+          <div class="day-label">Day Three · August 9</div>
+          <div class="day-title">Your AI Playbook &amp;<br>The Road Ahead</div>
+          <ul>
             <li>Workshop: Build your personal AI playbook</li>
             <li>Implementation planning &amp; peer feedback</li>
-            <li>Closing keynote: The road ahead</li>
+            <li>Closing keynote: What's next in AI</li>
+            <li>Playbook share-out &amp; commitments</li>
             <li>Farewell brunch &amp; departure</li>
           </ul>
         </div>
@@ -1102,7 +1190,7 @@
   <!-- VENUE -->
   <section class="venue" id="venue">
     <div class="venue-inner">
-      <div class="section-header">
+      <div class="section-header reveal">
         <div class="eyebrow">The Setting</div>
         <h2>Riverside Farm, <em>Pittsfield, Vermont</em></h2>
         <p>Nestled in the Green Mountains, Riverside Farm is a 100-acre private estate unlike any other event venue. Pristine barns, expansive grounds, and a setting that inspires clarity and creative thinking at every turn.</p>
@@ -1163,14 +1251,55 @@
   </footer>
 
   <script>
+    // ── Scroll Reveal (Intersection Observer) ──
+    (function() {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal, .stagger').forEach(function(el) {
+        io.observe(el);
+      });
+    })();
+
+    // ── Typing effect on hero eyebrow ──
+    (function() {
+      var el = document.getElementById('typed-text');
+      if (!el) return;
+      var words = ['Professionals.', 'Entrepreneurs.', 'Innovators.', 'Leaders.'];
+      var wi = 0, ci = 0, deleting = false;
+      var cursor = document.createElement('span');
+      cursor.className = 'typed-cursor';
+      el.after(cursor);
+
+      function tick() {
+        var word = words[wi];
+        if (!deleting) {
+          el.textContent = word.slice(0, ++ci);
+          if (ci === word.length) { deleting = true; setTimeout(tick, 1800); return; }
+          setTimeout(tick, 80);
+        } else {
+          el.textContent = word.slice(0, --ci);
+          if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; setTimeout(tick, 300); return; }
+          setTimeout(tick, 45);
+        }
+      }
+      setTimeout(tick, 1200);
+    })();
+
     // Navbar scroll effect
     window.addEventListener('scroll', function () {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
     });
 
-    // Countdown timer to August 8, 2025 9:00 AM ET
+    // Countdown timer to August 7, 2025 9:00 AM ET
     function updateCountdown() {
-      var target = new Date('2025-08-08T09:00:00-04:00');
+      var target = new Date('2025-08-07T09:00:00-04:00');
       var now = new Date();
       var diff = target - now;
       if (diff <= 0) {
