@@ -73,23 +73,94 @@
       position: absolute;
       inset: 0;
       background: url('https://bradleyparnell.github.io/riversidefarm/assets/landscape.jpg') center center / cover no-repeat;
+      filter: saturate(0.55) brightness(0.7);
     }
     .hero-overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         160deg,
-        rgba(15,27,45,0.82) 0%,
-        rgba(15,27,45,0.70) 40%,
-        rgba(45,74,53,0.60) 100%
+        rgba(4,12,28,0.88) 0%,
+        rgba(8,18,38,0.80) 45%,
+        rgba(12,28,22,0.72) 100%
       );
     }
+    /* Animated cyan grid */
     .hero-grid {
       position: absolute;
       inset: 0;
-      background-image: linear-gradient(rgba(201,169,110,0.05) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(201,169,110,0.05) 1px, transparent 1px);
-      background-size: 60px 60px;
+      background-image:
+        linear-gradient(rgba(0,210,255,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,210,255,0.07) 1px, transparent 1px);
+      background-size: 80px 80px;
+      animation: gridDrift 25s linear infinite;
+    }
+    @keyframes gridDrift {
+      0%   { background-position: 0 0; }
+      100% { background-position: 80px 80px; }
+    }
+    /* Glowing dot nodes at intersections */
+    .hero-dots {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(0,210,255,0.22) 1.5px, transparent 1.5px);
+      background-size: 80px 80px;
+      animation: gridDrift 25s linear infinite;
+    }
+    /* Floating orbs */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .hero-orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,140,255,0.18) 0%, transparent 70%);
+      top: -80px; left: -100px;
+      animation: orbFloat1 12s ease-in-out infinite alternate;
+    }
+    .hero-orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,255,180,0.12) 0%, transparent 70%);
+      bottom: -60px; right: -60px;
+      animation: orbFloat2 15s ease-in-out infinite alternate;
+    }
+    .hero-orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(201,169,110,0.15) 0%, transparent 70%);
+      top: 40%; left: 55%;
+      animation: orbFloat1 18s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes orbFloat1 {
+      0%   { transform: translate(0, 0); }
+      100% { transform: translate(40px, 30px); }
+    }
+    @keyframes orbFloat2 {
+      0%   { transform: translate(0, 0); }
+      100% { transform: translate(-30px, -40px); }
+    }
+    /* Scan line sweep */
+    .hero-scan {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .hero-scan::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(0,210,255,0.35) 30%, rgba(0,210,255,0.55) 50%, rgba(0,210,255,0.35) 70%, transparent 100%);
+      animation: scanSweep 8s ease-in-out infinite;
+      top: -2px;
+    }
+    @keyframes scanSweep {
+      0%   { top: -2px; opacity: 0; }
+      5%   { opacity: 1; }
+      95%  { opacity: 0.6; }
+      100% { top: 100%; opacity: 0; }
     }
     .hero-content {
       position: relative;
@@ -689,6 +760,11 @@
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-grid"></div>
+    <div class="hero-dots"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="hero-scan"></div>
     <div class="hero-content">
       <div class="hero-eyebrow">Riverside Farm · Pittsfield, Vermont</div>
       <h1>The <em>AI Summit</em><br>at Riverside Farm</h1>
@@ -874,10 +950,10 @@
       </div>
       <div class="venue-photos">
         <img src="https://bradleyparnell.github.io/riversidefarm/assets/landscape.jpg" alt="Riverside Farm Estate" />
-        <img src="https://bradleyparnell.github.io/riversidefarm/assets/redbarn.jpg" alt="The Red Barn" />
-        <img src="https://bradleyparnell.github.io/riversidefarm/assets/stonebarn.jpg" alt="The Stone Barn" />
         <img src="https://bradleyparnell.github.io/riversidefarm/assets/aerial2.jpg" alt="Aerial View" />
+        <img src="https://bradleyparnell.github.io/riversidefarm/assets/outdoor.jpg" alt="Outdoor Space" />
         <img src="https://bradleyparnell.github.io/riversidefarm/assets/exterior.jpg" alt="Exterior" />
+        <img src="https://bradleyparnell.github.io/riversidefarm/assets/estate2.jpg" alt="The Estate" />
       </div>
       <div class="venue-caption">
         <p>"The most stunning private event property in the Northeast — an environment that simply makes you think better."</p>
