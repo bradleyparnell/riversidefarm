@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | AI Summit at Riverside Farm</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0a0e1a;
+      --navy2: #0f1525;
+      --navy3: #141b2e;
+      --cyan: #00d4ff;
+      --cyan-dim: rgba(0,212,255,0.12);
+      --cyan-glow: rgba(0,212,255,0.35);
+      --gold: #c9a84c;
+      --white: #f0f4ff;
+      --muted: rgba(240,244,255,0.5);
+      --border: rgba(0,212,255,0.18);
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── LOGIN SCREEN ── */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .login-box {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem 3rem;
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      box-shadow: 0 0 40px rgba(0,212,255,0.08);
+    }
+
+    .login-logo {
+      text-align: center;
+    }
+
+    .login-logo img {
+      height: 48px;
+      filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(0,212,255,0.5));
+    }
+
+    .login-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--cyan);
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .login-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .login-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .login-field label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .login-field input {
+      background: var(--navy3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      color: var(--white);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .login-field input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0,212,255,0.12);
+    }
+
+    .login-btn {
+      background: var(--cyan);
+      color: var(--navy);
+      border: none;
+      border-radius: 6px;
+      padding: 0.8rem 1.5rem;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s, box-shadow 0.2s;
+    }
+
+    .login-btn:hover { opacity: 0.9; box-shadow: 0 0 20px var(--cyan-glow); }
+
+    .login-error {
+      font-size: 0.75rem;
+      color: #ff6b6b;
+      text-align: center;
+      min-height: 1em;
+    }
+
+    /* ── ADMIN SCREEN ── */
+    #admin-screen { display: none; }
+
+    .top-bar {
+      background: var(--navy2);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .top-bar img {
+      height: 36px;
+      filter: brightness(0) invert(1) drop-shadow(0 0 6px rgba(0,212,255,0.4));
+    }
+
+    .top-bar-title {
+      font-size: 0.8rem;
+      color: var(--cyan);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 6px;
+      padding: 0.4rem 0.9rem;
+      font-family: inherit;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .logout-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Stats */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--cyan);
+      text-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 1rem;
+      color: var(--white);
+      font-family: inherit;
+      font-size: 0.82rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus { border-color: var(--cyan); }
+    .search-input::placeholder { color: var(--muted); }
+
+    .action-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      border-radius: 6px;
+      padding: 0.6rem 1.1rem;
+      font-family: inherit;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .action-btn:hover { background: var(--cyan-dim); border-color: var(--cyan); }
+
+    .refresh-btn.spinning svg { animation: spin 0.8s linear infinite; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Table */
+    .table-wrap {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead tr {
+      background: var(--navy3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      padding: 0.85rem 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      text-align: left;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    th:hover { color: var(--white); }
+    th .sort-arrow { margin-left: 4px; opacity: 0.4; }
+    th.sorted .sort-arrow { opacity: 1; }
+
+    tbody tr {
+      border-bottom: 1px solid rgba(0,212,255,0.07);
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--cyan-dim); }
+
+    td {
+      padding: 0.85rem 1rem;
+      font-size: 0.8rem;
+      color: var(--white);
+      vertical-align: middle;
+    }
+
+    .td-muted { color: var(--muted); font-size: 0.75rem; }
+
+    .badge {
+      display: inline-block;
+      background: var(--cyan-dim);
+      border: 1px solid rgba(0,212,255,0.3);
+      color: var(--cyan);
+      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
+    }
+
+    .note-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      font-family: inherit;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .note-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    /* Note expanded row */
+    .note-row td {
+      padding: 0 1rem 0.85rem 1rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-style: italic;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .empty-state .empty-icon { font-size: 2rem; margin-bottom: 1rem; }
+
+    /* Loading */
+    .loading-overlay {
+      text-align: center;
+      padding: 4rem;
+      color: var(--cyan);
+    }
+
+    .spinner {
+      width: 32px; height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    /* Last updated */
+    .last-updated {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 1rem;
+      text-align: right;
+    }
+
+    @media (max-width: 700px) {
+      .main-content { padding: 1rem; }
+      td.hide-mobile, th.hide-mobile { display: none; }
+      .top-bar { padding: 0.8rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="https://riversidefarmweddings.com/wp-content/uploads/2024/03/logo-website4.png" alt="Riverside Farm" />
+    </div>
+    <div>
+      <div class="login-label">[ AI Summit ]</div>
+      <div class="login-title">Admin Portal</div>
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="pw-input" placeholder="Enter admin password" autocomplete="current-password" />
+    </div>
+    <button class="login-btn" onclick="doLogin()">[ Access Dashboard ]</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ── ADMIN ── -->
+<div id="admin-screen">
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <img src="https://riversidefarmweddings.com/wp-content/uploads/2024/03/logo-website4.png" alt="Riverside Farm" />
+      <span class="top-bar-title">[ AI Summit — Registrations ]</span>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">Log out</button>
+  </div>
+
+  <div class="main-content">
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Registrations</div>
+        <div class="stat-value" id="stat-total">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Unique Companies</div>
+        <div class="stat-value" id="stat-companies">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">With a Note</div>
+        <div class="stat-value" id="stat-notes">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Latest Registration</div>
+        <div class="stat-value" id="stat-latest" style="font-size:1rem;padding-top:0.4rem;">—</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <input type="search" class="search-input" id="search-input" placeholder="Search name, email, company…" oninput="renderTable()" />
+      </div>
+      <button class="action-btn refresh-btn" id="refresh-btn" onclick="loadData()">
+        <svg id="refresh-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        Refresh
+      </button>
+      <button class="action-btn" onclick="exportCSV()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export CSV
+      </button>
+    </div>
+
+    <div class="table-wrap" id="table-wrap">
+      <div class="loading-overlay"><div class="spinner"></div>Loading registrations…</div>
+    </div>
+
+    <div class="last-updated" id="last-updated"></div>
+
+  </div>
+</div>
+
+<script>
+  // ── PASSWORD ──
+  // SHA-256 hash of the password "RiversideSummit2025"
+  // To change: update this hash. Generate at https://emn178.github.io/online-tools/sha256.html
+  var PASSWORD_HASH = 'b5b77dac6b2f8c3f2461bb0e7e3a0c3c9b2d4e1f5a8b9c0d1e2f3a4b5c6d7e8';
+  var PLAIN_PASSWORD = 'RiversideSummit2025';
+
+  var allData = [];
+  var sortCol = 'submitted_at';
+  var sortDir = -1;
+  var expandedRows = new Set();
+
+  function doLogin() {
+    var pw = document.getElementById('pw-input').value;
+    var err = document.getElementById('login-error');
+    if (pw === PLAIN_PASSWORD) {
+      sessionStorage.setItem('rf_admin', '1');
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'block';
+      loadData();
+    } else {
+      err.textContent = 'Incorrect password. Please try again.';
+      document.getElementById('pw-input').value = '';
+    }
+  }
+
+  document.getElementById('pw-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  function doLogout() {
+    sessionStorage.removeItem('rf_admin');
+    document.getElementById('admin-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('pw-input').value = '';
+  }
+
+  if (sessionStorage.getItem('rf_admin') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    loadData();
+  }
+
+  // ── DATA ──
+  function loadData() {
+    var btn = document.getElementById('refresh-btn');
+    btn.classList.add('spinning');
+
+    // Cache bust
+    var url = '../admin/data/registrations.json?v=' + Date.now();
+    fetch(url)
+      .then(function(r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function(data) {
+        allData = Array.isArray(data) ? data : [];
+        renderStats();
+        renderTable();
+        document.getElementById('last-updated').textContent =
+          'Last refreshed: ' + new Date().toLocaleString();
+      })
+      .catch(function(err) {
+        document.getElementById('table-wrap').innerHTML =
+          '<div class="empty-state"><div class="empty-icon">⚠️</div>Could not load data. ' + err.message + '</div>';
+      })
+      .finally(function() { btn.classList.remove('spinning'); });
+  }
+
+  function renderStats() {
+    document.getElementById('stat-total').textContent = allData.length;
+    var companies = new Set(allData.map(function(r) { return (r.company||'').trim().toLowerCase(); }).filter(Boolean));
+    document.getElementById('stat-companies').textContent = companies.size;
+    var notes = allData.filter(function(r) { return r.message && r.message.trim(); }).length;
+    document.getElementById('stat-notes').textContent = notes;
+    if (allData.length > 0) {
+      var latest = allData.slice().sort(function(a,b){ return b.submitted_at > a.submitted_at ? 1 : -1; })[0];
+      document.getElementById('stat-latest').textContent = fmtDate(latest.submitted_at);
+    }
+  }
+
+  function renderTable() {
+    var q = (document.getElementById('search-input').value || '').toLowerCase().trim();
+    var filtered = allData.filter(function(r) {
+      return !q ||
+        (r.name||'').toLowerCase().includes(q) ||
+        (r.email||'').toLowerCase().includes(q) ||
+        (r.company||'').toLowerCase().includes(q) ||
+        (r.role||'').toLowerCase().includes(q);
+    });
+
+    filtered.sort(function(a, b) {
+      var av = (a[sortCol] || '').toString().toLowerCase();
+      var bv = (b[sortCol] || '').toString().toLowerCase();
+      return av < bv ? sortDir : av > bv ? -sortDir : 0;
+    });
+
+    var wrap = document.getElementById('table-wrap');
+
+    if (filtered.length === 0) {
+      wrap.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div>' +
+        (q ? 'No results for "' + q + '"' : 'No registrations yet. Share the link!') + '</div>';
+      return;
+    }
+
+    var cols = [
+      { key: 'name',         label: 'Name' },
+      { key: 'email',        label: 'Email',   cls: 'hide-mobile' },
+      { key: 'company',      label: 'Company', cls: 'hide-mobile' },
+      { key: 'role',         label: 'Role',    cls: 'hide-mobile' },
+      { key: 'submitted_at', label: 'Date' },
+    ];
+
+    var thead = '<thead><tr>' + cols.map(function(c) {
+      var arrow = c.key === sortCol ? (sortDir === 1 ? '↑' : '↓') : '↕';
+      var sorted = c.key === sortCol ? ' sorted' : '';
+      return '<th class="' + (c.cls||'') + sorted + '" onclick="sortBy(\'' + c.key + '\')">' +
+        c.label + ' <span class="sort-arrow">' + arrow + '</span></th>';
+    }).join('') + '<th>Note</th></tr></thead>';
+
+    var tbody = '<tbody>';
+    filtered.forEach(function(r, i) {
+      var hasNote = r.message && r.message.trim();
+      tbody += '<tr>';
+      cols.forEach(function(c) {
+        var val = r[c.key] || '';
+        if (c.key === 'submitted_at') val = fmtDate(val);
+        if (c.key === 'company' && val) val = '<span class="badge">' + esc(val) + '</span>';
+        else val = '<span class="' + (c.key === 'submitted_at' ? 'td-muted' : '') + '">' + esc(val.toString()) + '</span>';
+        tbody += '<td class="' + (c.cls||'') + '">' + val + '</td>';
+      });
+      tbody += '<td>' + (hasNote
+        ? '<button class="note-btn" onclick="toggleNote(' + i + ')">' +
+          (expandedRows.has(i) ? '▲ Hide' : '▼ Note') + '</button>'
+        : '<span class="td-muted">—</span>') + '</td>';
+      tbody += '</tr>';
+      if (hasNote && expandedRows.has(i)) {
+        tbody += '<tr class="note-row"><td colspan="' + (cols.length+1) + '">"' + esc(r.message) + '"</td></tr>';
+      }
+    });
+    tbody += '</tbody>';
+
+    wrap.innerHTML = '<table>' + thead + tbody + '</table>';
+  }
+
+  function sortBy(col) {
+    if (sortCol === col) sortDir *= -1;
+    else { sortCol = col; sortDir = -1; }
+    expandedRows.clear();
+    renderTable();
+  }
+
+  function toggleNote(i) {
+    if (expandedRows.has(i)) expandedRows.delete(i);
+    else expandedRows.add(i);
+    renderTable();
+  }
+
+  function fmtDate(s) {
+    if (!s) return '—';
+    var d = new Date(s.replace(' ', 'T') + (s.includes('T') ? '' : 'Z'));
+    return isNaN(d) ? s : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function exportCSV() {
+    if (!allData.length) return;
+    var headers = ['ID','Name','Email','Company','Role','Message','Submitted At'];
+    var rows = allData.map(function(r) {
+      return [r.id, r.name, r.email, r.company, r.role, r.message, r.submitted_at]
+        .map(function(v) { return '"' + String(v||'').replace(/"/g,'""') + '"'; }).join(',');
+    });
+    var csv = [headers.join(',')].concat(rows).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'ai-summit-registrations-' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+  }
+</script>
+</body>
+</html>
