@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Summit at Riverside Farm | August 7–9</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:   #2d4a35;
+      --green-light: #3d6147;
+      --navy:    #0f1b2d;
+      --navy-mid: #162033;
+      --gold:    #c9a96e;
+      --gold-light: #e2c898;
+      --cream:   #f5f0e8;
+      --white:   #ffffff;
+      --text:    #1a1f1b;
+      --muted:   #6b7280;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: linear-gradient(to bottom, rgba(15,27,45,0.85) 0%, transparent 100%);
+      transition: background 0.3s;
+    }
+    nav.scrolled { background: rgba(15,27,45,0.97); padding: 14px 48px; }
+    nav .logo img {
+      height: 52px;
+      filter: brightness(0) invert(1);
+      filter: brightness(0) invert(1) drop-shadow(0 1px 4px rgba(0,0,0,0.5));
+    }
+    nav .badge {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      color: var(--navy);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 7px 18px;
+      border-radius: 2px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 680px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('../assets/landscape.jpg') center center / cover no-repeat;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(15,27,45,0.82) 0%,
+        rgba(15,27,45,0.70) 40%,
+        rgba(45,74,53,0.60) 100%
+      );
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(201,169,110,0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(201,169,110,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content {
+      position: relative;
+      text-align: center;
+      color: var(--white);
+      padding: 0 24px;
+      max-width: 860px;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 36px;
+      letter-spacing: 0.02em;
+    }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 44px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item {
+      text-align: center;
+    }
+    .hero-meta-item .label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .hero-meta-item .value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--white);
+    }
+    .hero-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(201,169,110,0.35);
+    }
+    .hero-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px 44px;
+      border-radius: 2px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-right: 12px;
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,169,110,0.35); }
+    .hero-cta-ghost {
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.4);
+      color: var(--white);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px 36px;
+      border-radius: 2px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .hero-cta-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
+
+    /* ── COUNTDOWN ── */
+    .countdown-bar {
+      background: var(--navy);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .countdown-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .countdown-units {
+      display: flex;
+      gap: 24px;
+    }
+    .countdown-unit {
+      text-align: center;
+    }
+    .countdown-unit .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+      min-width: 56px;
+      display: block;
+    }
+    .countdown-unit .unit-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+    }
+    .countdown-sep {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--gold);
+      opacity: 0.5;
+      margin-top: -8px;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      padding: 100px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-text .section-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .about-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--navy);
+      margin-bottom: 24px;
+    }
+    .about-text h2 em { font-style: italic; color: var(--green); }
+    .about-text p {
+      font-size: 0.95rem;
+      color: #4a5568;
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .about-image {
+      position: relative;
+    }
+    .about-image img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+    .about-image-accent {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 120px;
+      height: 120px;
+      border: 2px solid var(--gold);
+      border-radius: 2px;
+      opacity: 0.4;
+      z-index: -1;
+    }
+
+    /* ── WHAT TO EXPECT ── */
+    .expect {
+      background: var(--cream);
+      padding: 100px 48px;
+    }
+    .expect-inner { max-width: 1100px; margin: 0 auto; }
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .section-header .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1.15;
+    }
+    .section-header h2 em { font-style: italic; color: var(--green); }
+    .section-header p {
+      max-width: 620px;
+      margin: 16px auto 0;
+      font-size: 0.95rem;
+      color: #4a5568;
+      line-height: 1.8;
+    }
+    .expect-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .expect-card {
+      background: var(--white);
+      padding: 40px 32px;
+      border-radius: 2px;
+      border-top: 3px solid var(--gold);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .expect-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.08); }
+    .expect-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--green) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      font-size: 1.3rem;
+    }
+    .expect-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .expect-card p {
+      font-size: 0.88rem;
+      color: #4a5568;
+      line-height: 1.8;
+    }
+
+    /* ── AGENDA STRIP ── */
+    .agenda {
+      background: var(--navy);
+      padding: 100px 48px;
+    }
+    .agenda-inner { max-width: 1100px; margin: 0 auto; }
+    .agenda .section-header h2 { color: var(--white); }
+    .agenda .section-header p { color: rgba(255,255,255,0.6); }
+    .agenda-days {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 16px;
+    }
+    .agenda-day {
+      background: rgba(255,255,255,0.04);
+      padding: 40px 32px;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .agenda-day:hover { background: rgba(255,255,255,0.07); border-color: var(--gold); }
+    .agenda-day .day-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .agenda-day .day-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .agenda-day ul {
+      list-style: none;
+      padding: 0;
+    }
+    .agenda-day ul li {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.65);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .agenda-day ul li::before {
+      content: '→';
+      color: var(--gold);
+      opacity: 0.7;
+      flex-shrink: 0;
+      margin-top: 0px;
+    }
+
+    /* ── PLAYBOOK ── */
+    .playbook {
+      padding: 100px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .playbook-image img {
+      width: 100%;
+      height: 460px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+    .playbook-text .section-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .playbook-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .playbook-text h2 em { font-style: italic; color: var(--green); }
+    .playbook-text p {
+      font-size: 0.95rem;
+      color: #4a5568;
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+    .playbook-outcomes {
+      list-style: none;
+      margin: 24px 0 32px;
+    }
+    .playbook-outcomes li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: #374151;
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .playbook-outcomes li .check {
+      width: 20px;
+      height: 20px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-size: 0.65rem;
+      color: white;
+    }
+
+    /* ── VENUE ── */
+    .venue {
+      background: var(--cream);
+      padding: 100px 48px;
+    }
+    .venue-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .venue-photos {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 260px 260px;
+      gap: 12px;
+      margin-top: 56px;
+    }
+    .venue-photos img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+    .venue-photos img:first-child { grid-row: 1 / 3; }
+    .venue-caption {
+      text-align: center;
+      margin-top: 32px;
+    }
+    .venue-caption p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: #6b7280;
+    }
+
+    /* ── REGISTER ── */
+    .register {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, var(--green) 100%);
+      padding: 100px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .register::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(201,169,110,0.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(201,169,110,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .register-inner {
+      position: relative;
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .register .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .register h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .register h2 em { font-style: italic; color: var(--gold-light); }
+    .register p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.8;
+      margin-bottom: 44px;
+    }
+    .register-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .register-form input,
+    .register-form select,
+    .register-form textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 2px;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .register-form input::placeholder,
+    .register-form textarea::placeholder { color: rgba(255,255,255,0.35); }
+    .register-form input:focus,
+    .register-form select:focus,
+    .register-form textarea:focus { border-color: var(--gold); }
+    .register-form select option { background: var(--navy); }
+    .register-form textarea { resize: vertical; min-height: 100px; }
+    .register-submit {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 18px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%;
+      margin-top: 8px;
+    }
+    .register-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,169,110,0.35); }
+    .register-note {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #090f18;
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    footer img {
+      height: 44px;
+      filter: brightness(0) invert(1);
+      opacity: 0.6;
+    }
+    footer p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.3);
+    }
+    footer a {
+      font-size: 0.8rem;
+      color: var(--gold);
+      text-decoration: none;
+      opacity: 0.7;
+    }
+    footer a:hover { opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .about, .playbook { grid-template-columns: 1fr; gap: 40px; padding: 64px 24px; }
+      .expect { padding: 64px 24px; }
+      .expect-grid { grid-template-columns: 1fr; }
+      .agenda { padding: 64px 24px; }
+      .agenda-days { grid-template-columns: 1fr; }
+      .venue { padding: 64px 24px; }
+      .venue-photos { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .venue-photos img:first-child { grid-row: auto; }
+      .register { padding: 64px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+      .countdown-bar { padding: 20px 24px; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="logo">
+      <img src="../assets/logo.png" alt="Riverside Farm" />
+    </div>
+    <span class="badge">August 7–9, 2025 · Pittsfield, VT</span>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Riverside Farm · Pittsfield, Vermont</div>
+      <h1>The <em>AI Summit</em><br>at Riverside Farm</h1>
+      <p class="hero-sub">Where innovation meets intention — deep in the Vermont countryside</p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <div class="label">Dates</div>
+          <div class="value">August 7 – 9</div>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-meta-item">
+          <div class="label">Location</div>
+          <div class="value">Riverside Farm, VT</div>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-meta-item">
+          <div class="label">Format</div>
+          <div class="value">3-Day Immersive Summit</div>
+        </div>
+      </div>
+      <a href="#register" class="hero-cta">Reserve Your Spot</a>
+      <a href="#about" class="hero-cta-ghost">Learn More</a>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-bar">
+    <span class="countdown-label">Countdown to the Summit</span>
+    <div class="countdown-units">
+      <div class="countdown-unit">
+        <span class="num" id="cd-days">--</span>
+        <span class="unit-label">Days</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit">
+        <span class="num" id="cd-hours">--</span>
+        <span class="unit-label">Hours</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit">
+        <span class="num" id="cd-mins">--</span>
+        <span class="unit-label">Minutes</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit">
+        <span class="num" id="cd-secs">--</span>
+        <span class="unit-label">Seconds</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-text">
+      <div class="section-eyebrow">About the Summit</div>
+      <h2>A Weekend Built for <em>Clarity, Connection,</em> and Action</h2>
+      <p>The AI Summit at Riverside Farm is an intentionally curated three-day experience for professionals, entrepreneurs, and innovators who want to move beyond the noise and develop a clear, practical understanding of Artificial Intelligence.</p>
+      <p>Set against the backdrop of one of Vermont's most stunning private estates, this summit blends world-class learning with the calm, focused energy that only a true retreat environment can provide. No distractions. No filler. Just meaningful conversations and actionable insight.</p>
+      <p>Attendees will hear from AI leaders, practitioners, and educators sharing real-world strategies across business, technology, and personal productivity — and just as importantly, they'll share their own experiences with each other.</p>
+    </div>
+    <div class="about-image">
+      <img src="../assets/corp-retreat1.png" alt="Summit at Riverside Farm" />
+      <div class="about-image-accent"></div>
+    </div>
+  </section>
+
+  <!-- WHAT TO EXPECT -->
+  <section class="expect" id="experience">
+    <div class="expect-inner">
+      <div class="section-header">
+        <div class="eyebrow">What to Expect</div>
+        <h2>Three Days of <em>Focused Innovation</em></h2>
+        <p>Every element of the summit is designed to help you leave with clarity, capability, and a concrete plan for applying AI in your world.</p>
+      </div>
+      <div class="expect-grid">
+        <div class="expect-card">
+          <div class="expect-icon">🎯</div>
+          <h3>Expert-Led Sessions</h3>
+          <p>Hear directly from AI practitioners, business leaders, and educators who are actively deploying AI in the real world. Practical, honest, and immediately applicable.</p>
+        </div>
+        <div class="expect-card">
+          <div class="expect-icon">🤝</div>
+          <h3>Peer Exchange</h3>
+          <p>Structured conversations where attendees openly share what's working, what isn't, and how they're using AI to improve efficiency and create new opportunities.</p>
+        </div>
+        <div class="expect-card">
+          <div class="expect-icon">⚡</div>
+          <h3>Live Workshops</h3>
+          <p>Hands-on sessions where you'll test tools, build workflows, and apply frameworks directly — not just hear about them. Leave with working implementations, not slides.</p>
+        </div>
+        <div class="expect-card">
+          <div class="expect-icon">🏡</div>
+          <h3>Retreat Environment</h3>
+          <p>Riverside Farm's Vermont estate creates the ideal atmosphere — focused, unhurried, and far from the distractions of daily life. The setting itself accelerates thinking.</p>
+        </div>
+        <div class="expect-card">
+          <div class="expect-icon">🗺️</div>
+          <h3>Your AI Playbook</h3>
+          <p>Leave with a personalized, practical AI playbook — proven frameworks, implementation strategies, and actionable ideas tailored to your business or career.</p>
+        </div>
+        <div class="expect-card">
+          <div class="expect-icon">🌐</div>
+          <h3>Lasting Network</h3>
+          <p>Connect with a curated group of forward-thinking professionals who share your commitment to leveraging technology as a genuine competitive advantage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENDA -->
+  <section class="agenda" id="agenda">
+    <div class="agenda-inner">
+      <div class="section-header">
+        <div class="eyebrow">Weekend Overview</div>
+        <h2>Three Days, <em>One Transformation</em></h2>
+        <p style="color:rgba(255,255,255,0.55)">A thoughtfully designed arc — from foundation to implementation to ownership.</p>
+      </div>
+      <div class="agenda-days">
+        <div class="agenda-day">
+          <div class="day-label">Day One · August 7</div>
+          <div class="day-title">Foundations &amp;<br>Orientation</div>
+          <ul>
+            <li>Arrival, welcome reception &amp; farm tour</li>
+            <li>Opening keynote: The AI landscape today</li>
+            <li>Where are you now? AI readiness assessment</li>
+            <li>Peer introductions &amp; experience mapping</li>
+            <li>Evening dinner under the Vermont sky</li>
+          </ul>
+        </div>
+        <div class="agenda-day">
+          <div class="day-label">Day Two · August 8</div>
+          <div class="day-title">Application &amp;<br>Deep Dives</div>
+          <ul>
+            <li>Morning sessions: AI across business functions</li>
+            <li>Live workshop: Build your first AI workflow</li>
+            <li>Panel: Real-world wins, failures &amp; lessons</li>
+            <li>Breakouts by industry &amp; use case</li>
+            <li>Evening fire pit: open exchange &amp; networking</li>
+          </ul>
+        </div>
+        <div class="agenda-day">
+          <div class="day-label">Day Three · August 9</div>
+          <div class="day-title">Playbook &amp;<br>Action Planning</div>
+          <ul>
+            <li>Morning workshop: Build your personal AI playbook</li>
+            <li>Implementation planning &amp; peer feedback</li>
+            <li>Closing keynote: The road ahead</li>
+            <li>Group commitments &amp; accountability pairs</li>
+            <li>Farewell brunch &amp; departure</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYBOOK -->
+  <section class="playbook" id="playbook">
+    <div class="playbook-image">
+      <img src="../assets/corp-retreat2.png" alt="AI Playbook" />
+    </div>
+    <div class="playbook-text">
+      <div class="section-eyebrow">The Core Outcome</div>
+      <h2>Leave with Your Own <em>AI Playbook</em></h2>
+      <p>One of the defining outcomes of this summit is the development of a practical, personalized AI playbook. This isn't a generic handout — it's a working document you build throughout the weekend, shaped by your specific goals, industry, and challenges.</p>
+      <p>By Sunday afternoon, every participant walks away with a clear roadmap for implementing AI in meaningful ways — immediately.</p>
+      <ul class="playbook-outcomes">
+        <li><span class="check">✓</span> Proven AI frameworks adapted to your context</li>
+        <li><span class="check">✓</span> Prioritized implementation roadmap</li>
+        <li><span class="check">✓</span> Curated tool stack for your use cases</li>
+        <li><span class="check">✓</span> Efficiency and automation opportunities identified</li>
+        <li><span class="check">✓</span> 90-day action plan with accountability structure</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- VENUE -->
+  <section class="venue" id="venue">
+    <div class="venue-inner">
+      <div class="section-header">
+        <div class="eyebrow">The Setting</div>
+        <h2>Riverside Farm, <em>Pittsfield, Vermont</em></h2>
+        <p>Nestled in the Green Mountains, Riverside Farm is a 100-acre private estate unlike any other event venue. Pristine barns, expansive grounds, and a setting that inspires clarity and creative thinking at every turn.</p>
+      </div>
+      <div class="venue-photos">
+        <img src="../assets/landscape.jpg" alt="Riverside Farm Estate" />
+        <img src="../assets/redbarn.jpg" alt="The Red Barn" />
+        <img src="../assets/stonebarn.jpg" alt="The Stone Barn" />
+        <img src="../assets/aerial2.jpg" alt="Aerial View" />
+        <img src="../assets/exterior.jpg" alt="Exterior" />
+      </div>
+      <div class="venue-caption">
+        <p>"The most stunning private event property in the Northeast — an environment that simply makes you think better."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER -->
+  <section class="register" id="register">
+    <div class="register-inner">
+      <div class="eyebrow">Secure Your Place</div>
+      <h2>Reserve Your Spot at the<br><em>AI Summit</em></h2>
+      <p>Space is intentionally limited to ensure a focused, high-quality experience for every attendee. Submit your interest below and we'll be in touch with details and next steps.</p>
+      <form class="register-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <input type="text" placeholder="First Name" required />
+          <input type="text" placeholder="Last Name" required />
+        </div>
+        <input type="email" placeholder="Email Address" required />
+        <input type="text" placeholder="Company / Organization" />
+        <div class="form-row">
+          <input type="text" placeholder="Job Title / Role" />
+          <select>
+            <option value="" disabled selected>Industry</option>
+            <option>Technology</option>
+            <option>Finance & Investment</option>
+            <option>Healthcare</option>
+            <option>Real Estate</option>
+            <option>Professional Services</option>
+            <option>Manufacturing</option>
+            <option>Marketing & Media</option>
+            <option>Education</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <textarea placeholder="What are you hoping to get out of the summit? (optional)"></textarea>
+        <button type="submit" class="register-submit">Submit Registration Interest</button>
+      </form>
+      <p class="register-note">We'll confirm availability and follow up within 48 hours.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="../assets/logo.png" alt="Riverside Farm" />
+    <p>© 2025 Riverside Farm · Pittsfield, Vermont · All rights reserved</p>
+    <a href="https://riversidefarmweddings.com" target="_blank">riversidefarmweddings.com</a>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function () {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Countdown timer to August 7, 2025 9:00 AM ET
+    function updateCountdown() {
+      var target = new Date('2025-08-07T09:00:00-04:00');
+      var now = new Date();
+      var diff = target - now;
+      if (diff <= 0) {
+        document.querySelector('.countdown-bar').innerHTML = '<span style="color:var(--gold);font-size:1rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">The Summit is underway — welcome!</span>';
+        return;
+      }
+      var d = Math.floor(diff / 86400000);
+      var h = Math.floor((diff % 86400000) / 3600000);
+      var m = Math.floor((diff % 3600000) / 60000);
+      var s = Math.floor((diff % 60000) / 1000);
+      document.getElementById('cd-days').textContent  = String(d).padStart(2, '0');
+      document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+      document.getElementById('cd-mins').textContent  = String(m).padStart(2, '0');
+      document.getElementById('cd-secs').textContent  = String(s).padStart(2, '0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Form submit handler
+    function handleSubmit(e) {
+      e.preventDefault();
+      var btn = e.target.querySelector('.register-submit');
+      btn.textContent = '✓ Interest Received — We\'ll Be in Touch!';
+      btn.style.background = 'linear-gradient(135deg, #2d4a35 0%, #3d6147 100%)';
+      btn.style.color = '#fff';
+      btn.disabled = true;
+    }
+  </script>
+
+</body>
+</html>
