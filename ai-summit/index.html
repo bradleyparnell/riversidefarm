@@ -4,21 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Summit at Riverside Farm | August 7–9</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --green:   #2d4a35;
       --green-light: #3d6147;
-      --navy:    #0f1b2d;
-      --navy-mid: #162033;
+      --navy:    #0a1628;
+      --navy-mid: #0f1e35;
       --gold:    #c9a96e;
       --gold-light: #e2c898;
       --cream:   #f5f0e8;
       --white:   #ffffff;
       --text:    #1a1f1b;
       --muted:   #6b7280;
+      --cyan:    #00d4ff;
+      --cyan-dim: rgba(0,212,255,0.12);
+      --mono: 'JetBrains Mono', monospace;
     }
 
     html { scroll-behavior: smooth; }
@@ -72,8 +75,8 @@
     .hero-bg {
       position: absolute;
       inset: 0;
-      background: url('https://bradleyparnell.github.io/riversidefarm/assets/landscape.jpg') center center / cover no-repeat;
-      filter: saturate(0.55) brightness(0.7);
+      background: url('https://bradleyparnell.github.io/riversidefarm/assets/ai-summit-hero.jpg') center center / cover no-repeat;
+      filter: saturate(0.85) brightness(0.65);
     }
     .hero-overlay {
       position: absolute;
@@ -140,27 +143,118 @@
       0%   { transform: translate(0, 0); }
       100% { transform: translate(-30px, -40px); }
     }
-    /* Scan line sweep */
-    .hero-scan {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
+    /* Scan line removed */
+
+    /* ── TECHY ENHANCEMENTS ── */
+
+    /* Monospace eyebrow style */
+    .section-eyebrow,
+    .about-text .section-eyebrow,
+    .playbook-text .section-eyebrow,
+    .section-header .eyebrow {
+      font-family: var(--mono) !important;
+      font-size: 0.65rem !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase;
     }
-    .hero-scan::after {
+    .section-eyebrow::before,
+    .about-text .section-eyebrow::before,
+    .playbook-text .section-eyebrow::before,
+    .section-header .eyebrow::before { content: '[ '; }
+    .section-eyebrow::after,
+    .about-text .section-eyebrow::after,
+    .playbook-text .section-eyebrow::after,
+    .section-header .eyebrow::after  { content: ' ]'; }
+
+    /* Countdown: monospace numbers + cyan accent */
+    .countdown-bar {
+      background: linear-gradient(135deg, #060e1e 0%, #0a1628 60%, #091520 100%) !important;
+      border-bottom: 1px solid rgba(0,212,255,0.15);
+    }
+    .countdown-unit .num {
+      font-family: var(--mono) !important;
+      font-size: 2.4rem !important;
+      color: var(--cyan) !important;
+      text-shadow: 0 0 18px rgba(0,212,255,0.45);
+    }
+    .countdown-sep { color: var(--cyan) !important; opacity: 0.4 !important; }
+    .countdown-label { color: var(--cyan) !important; opacity: 0.7; }
+
+    /* Glow on expect cards */
+    .expect-card {
+      border: 1px solid transparent !important;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s !important;
+    }
+    .expect-card:hover {
+      border-color: rgba(0,212,255,0.25) !important;
+      box-shadow: 0 8px 40px rgba(0,212,255,0.1), 0 2px 12px rgba(0,0,0,0.06) !important;
+    }
+    .expect-icon {
+      background: none !important;
+      font-size: 1.8rem !important;
+    }
+
+    /* Hero grid brighter */
+    .hero-grid {
+      background-image:
+        linear-gradient(rgba(0,212,255,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.1) 1px, transparent 1px) !important;
+    }
+    .hero-dots {
+      background-image: radial-gradient(circle, rgba(0,212,255,0.3) 1.5px, transparent 1.5px) !important;
+    }
+
+    /* Hero badge pill techy */
+    .hero-meta { gap: 12px; }
+    .hero-meta span {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+    }
+
+    /* Agenda day badge techy */
+    .day-badge, .day-num {
+      font-family: var(--mono) !important;
+    }
+
+    /* Playbook checklist items */
+    .playbook-item::before {
+      content: '✓' !important;
+      color: var(--cyan) !important;
+      text-shadow: 0 0 8px rgba(0,212,255,0.5);
+    }
+
+    /* Register section techy border */
+    .register {
+      background: linear-gradient(160deg, #060e1e 0%, #0a1628 100%) !important;
+      position: relative;
+    }
+    .register::before {
       content: '';
       position: absolute;
-      left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent 0%, rgba(0,210,255,0.35) 30%, rgba(0,210,255,0.55) 50%, rgba(0,210,255,0.35) 70%, transparent 100%);
-      animation: scanSweep 8s ease-in-out infinite;
-      top: -2px;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
     }
-    @keyframes scanSweep {
-      0%   { top: -2px; opacity: 0; }
-      5%   { opacity: 1; }
-      95%  { opacity: 0.6; }
-      100% { top: 100%; opacity: 0; }
+    .form-input, .form-select, .form-textarea {
+      border: 1px solid rgba(255,255,255,0.12) !important;
+      background: rgba(255,255,255,0.04) !important;
+      transition: border-color 0.2s, box-shadow 0.2s !important;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: rgba(0,212,255,0.4) !important;
+      box-shadow: 0 0 0 3px rgba(0,212,255,0.08) !important;
+      outline: none;
+    }
+
+    /* Nav techy accents */
+    .nav-link {
+      font-family: var(--mono);
+      font-size: 0.65rem !important;
+      letter-spacing: 0.1em;
     }
     .hero-content {
       position: relative;
@@ -764,7 +858,7 @@
     <div class="hero-orb hero-orb-1"></div>
     <div class="hero-orb hero-orb-2"></div>
     <div class="hero-orb hero-orb-3"></div>
-    <div class="hero-scan"></div>
+
     <div class="hero-content">
       <div class="hero-eyebrow">Riverside Farm · Pittsfield, Vermont</div>
       <h1>The <em>AI Summit</em><br>at Riverside Farm</h1>
