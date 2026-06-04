@@ -4,7 +4,7 @@
   // Create a container to mount into
   var container = document.createElement('div');
   container.id = 'rf-corporate-embed';
-  container.style.cssText = 'width:100%;margin:0;padding:0;';
+  container.style.cssText = 'width:100vw;margin:0;padding:0;position:relative;left:50%;transform:translateX(-50%);overflow-x:hidden;';
 
   // Insert right after this script tag
   var scripts = document.getElementsByTagName('script');
