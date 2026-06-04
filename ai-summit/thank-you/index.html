@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're Registered | AI Summit at Riverside Farm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0a0e1a;
+      --navy2: #0f1525;
+      --cyan: #00d4ff;
+      --cyan-dim: rgba(0,212,255,0.15);
+      --cyan-glow: rgba(0,212,255,0.4);
+      --gold: #c9a84c;
+      --white: #f0f4ff;
+      --muted: rgba(240,244,255,0.55);
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'JetBrains Mono', monospace;
+      overflow-x: hidden;
+    }
+
+    /* ── GRID CANVAS ── */
+    .grid-canvas {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+    }
+
+    /* ── ORB ── */
+    .orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(80px); pointer-events: none; z-index: 0;
+    }
+    .orb-1 { width: 500px; height: 500px; top: -120px; left: -120px; background: radial-gradient(circle, rgba(0,212,255,0.12), transparent 70%); animation: drift1 18s ease-in-out infinite; }
+    .orb-2 { width: 400px; height: 400px; bottom: -80px; right: -80px; background: radial-gradient(circle, rgba(100,149,237,0.1), transparent 70%); animation: drift2 22s ease-in-out infinite; }
+    @keyframes drift1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px, 30px); } }
+    @keyframes drift2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-30px, -40px); } }
+
+    /* ── NAV ── */
+    nav {
+      position: relative; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 40px;
+      border-bottom: 1px solid rgba(0,212,255,0.1);
+    }
+    .nav-logo img {
+      height: 52px;
+      filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(0,212,255,0.4));
+    }
+
+    /* ── MAIN ── */
+    main {
+      position: relative; z-index: 5;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: calc(100vh - 100px);
+      padding: 60px 24px;
+      text-align: center;
+    }
+
+    /* ── CHECK ICON ── */
+    .check-wrap {
+      width: 88px; height: 88px;
+      border: 2px solid var(--cyan);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 32px;
+      box-shadow: 0 0 30px var(--cyan-glow), inset 0 0 20px rgba(0,212,255,0.05);
+      animation: checkPulse 3s ease-in-out infinite;
+    }
+    @keyframes checkPulse {
+      0%,100% { box-shadow: 0 0 30px var(--cyan-glow), inset 0 0 20px rgba(0,212,255,0.05); }
+      50% { box-shadow: 0 0 50px var(--cyan-glow), inset 0 0 30px rgba(0,212,255,0.1); }
+    }
+    .check-wrap svg { width: 44px; height: 44px; stroke: var(--cyan); stroke-width: 2.5; fill: none; }
+
+    /* ── TAG ── */
+    .tag {
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--cyan); border: 1px solid rgba(0,212,255,0.3);
+      padding: 5px 16px; border-radius: 20px;
+      background: rgba(0,212,255,0.08);
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700; line-height: 1.15;
+      margin-bottom: 20px; letter-spacing: -0.02em;
+    }
+    h1 em { font-style: normal; color: var(--cyan); }
+
+    .sub {
+      font-size: 1rem; color: var(--muted); line-height: 1.7;
+      max-width: 540px; margin-bottom: 48px;
+    }
+
+    /* ── DETAILS BOX ── */
+    .details-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(0,212,255,0.15);
+      border-top: 3px solid var(--cyan);
+      border-radius: 4px;
+      padding: 32px 40px;
+      max-width: 480px; width: 100%;
+      margin-bottom: 40px;
+      text-align: left;
+    }
+    .details-box .label {
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 4px;
+    }
+    .details-box .val {
+      font-size: 1rem; font-weight: 600; color: var(--white);
+      margin-bottom: 20px;
+    }
+    .details-box .val:last-child { margin-bottom: 0; }
+    .details-box .val span { color: var(--muted); font-weight: 400; }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--cyan); color: #000a14;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+      padding: 14px 28px; border: none; border-radius: 3px;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: #33ddff; transform: translateY(-1px); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.06em;
+      padding: 14px 28px;
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 3px;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    /* ── FOOTER NOTE ── */
+    .footer-note {
+      margin-top: 48px;
+      font-size: 12px; color: var(--muted); line-height: 1.6;
+    }
+    .footer-note a { color: var(--cyan); text-decoration: none; }
+    .footer-note a:hover { text-decoration: underline; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .details-box { padding: 24px 20px; }
+      .btn-row { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-canvas"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <nav>
+    <div class="nav-logo">
+      <img src="https://bradleyparnell.github.io/riversidefarm/assets/logo.png" alt="Riverside Farm" />
+    </div>
+  </nav>
+
+  <main>
+    <div class="check-wrap">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+
+    <div class="tag">[ Registration Confirmed ]</div>
+
+    <h1>You're In.<br><em>See You in Vermont.</em></h1>
+
+    <p class="sub">
+      Your spot at the AI Summit at Riverside Farm is secured. 
+      Expect a confirmation email shortly with everything you need to know before August 7th.
+    </p>
+
+    <div class="details-box">
+      <div class="label">Event</div>
+      <div class="val">AI Summit at Riverside Farm</div>
+
+      <div class="label">Dates</div>
+      <div class="val">August 7–9, 2025 <span>· Pittsfield, Vermont</span></div>
+
+      <div class="label">What's Next</div>
+      <div class="val">
+        <span>Check your inbox for your confirmation and pre-event materials. 
+        Add the dates to your calendar — limited seats remain.</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <a href="https://bradleyparnell.github.io/riversidefarm/ai-summit/" class="btn-ghost">← Back to Summit Page</a>
+    </div>
+
+    <p class="footer-note">
+      Questions? Email <a href="mailto:info@riversidefarm.com">info@riversidefarm.com</a><br />
+      Riverside Farm · Pittsfield, Vermont
+    </p>
+  </main>
+</body>
+</html>

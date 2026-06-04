@@ -1214,16 +1214,16 @@
       <div class="eyebrow">Secure Your Place</div>
       <h2>Reserve Your Spot at the<br><em>AI Summit</em></h2>
       <p>Space is intentionally limited to ensure a focused, high-quality experience for every attendee. Submit your interest below and we'll be in touch with details and next steps.</p>
-      <form class="register-form" onsubmit="handleSubmit(event)">
+      <form class="register-form" id="summit-form" onsubmit="handleSubmit(event)">
         <div class="form-row">
-          <input type="text" placeholder="First Name" required />
-          <input type="text" placeholder="Last Name" required />
+          <input type="text" name="first_name" placeholder="First Name" required />
+          <input type="text" name="last_name" placeholder="Last Name" required />
         </div>
-        <input type="email" placeholder="Email Address" required />
-        <input type="text" placeholder="Company / Organization" />
+        <input type="email" name="email" placeholder="Email Address" required />
+        <input type="text" name="company" placeholder="Company / Organization" />
         <div class="form-row">
-          <input type="text" placeholder="Job Title / Role" />
-          <select>
+          <input type="text" name="role" placeholder="Job Title / Role" />
+          <select name="industry">
             <option value="" disabled selected>Industry</option>
             <option>Technology</option>
             <option>Finance & Investment</option>
@@ -1236,8 +1236,8 @@
             <option>Other</option>
           </select>
         </div>
-        <textarea placeholder="What are you hoping to get out of the summit? (optional)"></textarea>
-        <button type="submit" class="register-submit">Submit Registration Interest</button>
+        <textarea name="message" placeholder="What are you hoping to get out of the summit? (optional)"></textarea>
+        <button type="submit" class="register-submit" id="submit-btn">Submit Registration Interest</button>
       </form>
       <p class="register-note">We'll confirm availability and follow up within 48 hours.</p>
     </div>
@@ -1319,13 +1319,42 @@
     setInterval(updateCountdown, 1000);
 
     // Form submit handler
+    var WEBHOOK_URL = 'PASTE_WEBHOOK_URL_HERE';
+
     function handleSubmit(e) {
       e.preventDefault();
-      var btn = e.target.querySelector('.register-submit');
-      btn.textContent = '✓ Interest Received — We\'ll Be in Touch!';
-      btn.style.background = 'linear-gradient(135deg, #2d4a35 0%, #3d6147 100%)';
-      btn.style.color = '#fff';
+      var form = e.target;
+      var btn = document.getElementById('submit-btn');
+      var fd = new FormData(form);
+
+      var payload = {
+        first_name: fd.get('first_name') || '',
+        last_name:  fd.get('last_name')  || '',
+        name:       (fd.get('first_name') + ' ' + fd.get('last_name')).trim(),
+        email:      fd.get('email')      || '',
+        company:    fd.get('company')    || '',
+        role:       fd.get('role')       || '',
+        industry:   fd.get('industry')   || '',
+        message:    fd.get('message')    || '',
+        source:     'ai-summit-form',
+        submitted_at: new Date().toISOString()
+      };
+
+      btn.textContent = 'Submitting…';
       btn.disabled = true;
+
+      // If webhook URL is configured, POST to it; otherwise skip gracefully
+      var doPost = WEBHOOK_URL && WEBHOOK_URL !== 'PASTE_WEBHOOK_URL_HERE'
+        ? fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }).then(function() { return true; }).catch(function() { return true; })
+        : Promise.resolve(true);
+
+      doPost.then(function() {
+        window.location.href = '../thank-you/';
+      });
     }
   </script>
 
